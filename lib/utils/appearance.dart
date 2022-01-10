@@ -35,12 +35,12 @@ const textTheme = TextTheme(
   subtitle1: TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.w700,
-    color: MyColors.textDark,
+    color: MyColors.textHint,
   ),
   subtitle2: TextStyle(
-      fontSize: 12.0, fontWeight: FontWeight.w500, color: MyColors.textDark),
+      fontSize: 12.0, fontWeight: FontWeight.w500, color: MyColors.textHint),
   button: TextStyle(
-      fontSize: 14.0, fontWeight: FontWeight.w800, color: MyColors.textDark),
+      fontSize: 17.0, fontWeight: FontWeight.w800, color: MyColors.textDark),
 );
 
 class MyColors {
