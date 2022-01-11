@@ -1,4 +1,5 @@
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/widget/expandable_list.widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 33),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
       child: SingleChildScrollView(
         physics: const ScrollPhysics(),
         child: ListView(
@@ -87,6 +88,25 @@ class Profile extends StatelessWidget {
                 "usermail@johnsmith.com",
                 style: textTheme.bodyText1,
               ),
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+
+            /// Expandable List
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                        color: MyColors.shadow.shade100,
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                        offset: Offset(1, 2))
+                  ]),
+              child: ExpandableList(),
             )
           ],
         ),
