@@ -138,4 +138,6 @@ class MyColors {
   });
 
   static const Color backgroundWhite = Color(0xFFFFFFFF);
+  static const Color textLink = Color(0xff2893E3);
+  static const Color filedIcon = Color(0xFF7C8592);
 }

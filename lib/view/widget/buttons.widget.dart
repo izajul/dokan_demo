@@ -28,9 +28,12 @@ class ButtonWithRipple extends StatelessWidget {
     return SizedBox(
       height: height ?? 60,
       width: width ?? double.infinity,
-      child: Material(
-        color: background ?? MyColors.primaryAccent,
-        borderRadius: borderRadius ?? BorderRadius.circular(10.0),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 5),
+        decoration: BoxDecoration(
+          color: background ?? MyColors.primaryAccent,
+          borderRadius: borderRadius ?? BorderRadius.circular(10.0),
+        ),
         child: InkWell(
           borderRadius: borderRadius ?? BorderRadius.circular(10.0),
           splashColor: rippleColor ?? MyColors.textHint.shade400,

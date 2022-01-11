@@ -46,7 +46,7 @@ class Login extends StatelessWidget {
                 Flexible(
                     child: FormFieldRounded(
                   hintText: "Email",
-                  icon: Icons.mail_outline_rounded,
+                  icon: "assets/imgs/email_ic.png",
                 )),
                 const SizedBox(
                   height: 10,
@@ -55,7 +55,7 @@ class Login extends StatelessWidget {
                     child: FormFieldRounded(
                   hintText: "Password",
                   inputType: TextInputType.visiblePassword,
-                  icon: Icons.lock_outline_rounded,
+                  icon: "assets/imgs/lock_ic.png",
                 )),
                 const SizedBox(
                   height: 5,

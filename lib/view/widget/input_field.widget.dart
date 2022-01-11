@@ -25,7 +25,7 @@ class FormFieldRounded extends StatelessWidget {
       this.isMultiline = false,
       this.initValue,
       this.onChange,
-      this.icon = Icons.verified_user})
+      this.icon = "assets/imgs/user_ic.png"})
       : super(key: key);
 
   @override
@@ -37,6 +37,7 @@ class FormFieldRounded extends StatelessWidget {
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter state) {
           return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10.0),
@@ -75,9 +76,10 @@ class FormFieldRounded extends StatelessWidget {
                   fillColor: Colors.white,
                   icon: Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: Icon(
+                    child: Image.asset(
                       icon,
-                      color: MyColors.borderDark,
+                      width: 24,
+                      height: 24,
                     ),
                   ),
                   suffixIcon: inputType == TextInputType.visiblePassword
@@ -90,11 +92,11 @@ class FormFieldRounded extends StatelessWidget {
                           child: isViewPass
                               ? const Icon(
                                   Icons.visibility,
-                                  color: MyColors.borderDark,
+                                  color: MyColors.filedIcon,
                                 )
                               : const Icon(
                                   Icons.visibility_off,
-                                  color: MyColors.borderDark,
+                                  color: MyColors.filedIcon,
                                 ),
                         )
                       : null,

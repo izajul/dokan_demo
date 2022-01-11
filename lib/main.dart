@@ -1,4 +1,5 @@
 import 'package:dokan/view/login.view.dart';
+import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/splash.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
       title: 'Dokan Demo',
       theme: theme,
       onGenerateRoute: onGenerateRoute,
-      initialRoute: Login.routeName,
+      initialRoute: Registration.routeName,
+      // initialRoute: Login.routeName,
       // initialRoute: Splash.routeName,
       debugShowCheckedModeBanner: false,
     );
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
         break;
       case Login.routeName:
         _nextPage = const Login();
+        break;
+      case Registration.routeName:
+        _nextPage = const Registration();
         break;
       default:
         _nextPage = const Splash();
