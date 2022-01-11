@@ -31,19 +31,26 @@ class _HomeState extends State<Home> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        //Floating action button on Scaffold
-        elevation: 3,
+      floatingActionButton: Transform.translate(
+        offset: Offset(0, 6),
+        child: SizedBox(
+          width: 60,
+          height: 60,
+          child: FloatingActionButton(
+            //Floating action button on Scaffold
+            elevation: 3,
 
-        backgroundColor: MyColors.primaryAccent,
-        onPressed: () {
-          //code to execute on button press
-        },
-        child: const Icon(
-          Icons.search_sharp,
-          color: Colors.white,
-          size: 30,
-        ), //icon inside button
+            backgroundColor: MyColors.primaryAccent,
+            onPressed: () {
+              //code to execute on button press
+            },
+            child: const Icon(
+              Icons.search_sharp,
+              color: Colors.white,
+              size: 30,
+            ), //icon inside button
+          ),
+        ),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -55,9 +62,9 @@ class _HomeState extends State<Home> {
         color: Colors.transparent,
         shape: const CircularNotchedRectangle(),
         notchMargin:
-            8, //notche margin between floating button and bottom appbar
+            0, //notche margin between floating button and bottom appbar
         child: Container(
-          height: 60,
+          height: 65,
           decoration: ShapeDecoration(
             color: Colors.white,
             shape: BottomAppBarBorderShape(),
