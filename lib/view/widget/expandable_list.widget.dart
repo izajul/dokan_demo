@@ -18,8 +18,35 @@ class ExpandableList extends StatefulWidget {
   _ExpandableListState createState() => _ExpandableListState();
 }
 
-class _ExpandableListState extends State<ExpandableList> {
+class _ExpandableListState extends State<ExpandableList>
+    with SingleTickerProviderStateMixin {
   int _inx = -1;
+
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 350));
+    _animation =
+        CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+    super.initState();
+  }
+
+  onExpend(index) {
+    if (_controller.isAnimating) return;
+    if (_controller.isCompleted) {
+      _controller.reverse().then((value) => setState(() {
+            _inx = -1;
+          }));
+      return;
+    }
+    setState(() {
+      _inx = index;
+      _controller.forward();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +59,7 @@ class _ExpandableListState extends State<ExpandableList> {
         itemBuilder: (BuildContext context, int index) {
           final item = widget.items[index];
           return GestureDetector(
-            onTap: () {
-              if (_inx == index) {
-                setState(() {
-                  _inx = -1;
-                });
-                return;
-              }
-              setState(() {
-                _inx = index;
-              });
-            },
+            onTap: () => onExpend(index),
             child: Column(
               children: [
                 Row(
@@ -60,40 +77,15 @@ class _ExpandableListState extends State<ExpandableList> {
                     ),
                   ],
                 ),
-                /*SizeTransition(
-                  sizeFactor: _controller,
-                  child: item.item,
-                )*/
-                ExpandableContainer(
-                  child: item.item,
-                  expanded: (_inx == index),
+                SizeTransition(
+                  sizeFactor: _animation,
+                  child: _inx == index ? item.item : SizedBox(),
                 )
               ],
             ),
           );
         },
       ),
-    );
-  }
-}
-
-class ExpandableContainer extends StatelessWidget {
-  final bool expanded;
-  final Widget child;
-
-  ExpandableContainer({
-    required this.child,
-    this.expanded = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      width: screenWidth,
-      child: child,
     );
   }
 }
