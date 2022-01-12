@@ -1,4 +1,5 @@
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/reuseable/bottom_sheet.reuseable.dart';
 import 'package:dokan/view/widget/dropdown.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,13 @@ class FilterBar extends StatelessWidget {
           SizedBox(
             height: 40,
             child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    useRootNavigator: true,
+                    builder: (context) => const MainBottomSheet(),
+                  );
+                },
                 style: TextButton.styleFrom(padding: const EdgeInsets.all(10)),
                 child: Row(
                   children: [

@@ -76,13 +76,13 @@ class ButtonOutLine extends MyButton {
   Widget build(BuildContext context) {
     return SizedBox(
       width: widht,
-      height: 33,
+      height: 60,
       child: OutlinedButton(
         onPressed: onPress,
         style: OutlinedButton.styleFrom(
             padding: EdgeInsets.all(padding),
             primary: Colors.blue,
-            side: BorderSide(width: 1.5, color: borderColor ?? Colors.black),
+            side: BorderSide(width: 1, color: borderColor ?? Colors.black),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderRadious ?? 50.0))),
         child: text ?? const Text("button"),

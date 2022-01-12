@@ -17,6 +17,7 @@ final theme = ThemeData(
     backgroundColor: Colors.white,
     textTheme: textTheme,
     shadowColor: MyColors.shadow,
+    unselectedWidgetColor: MyColors.primary,
     indicatorColor: MyColors.textDark);
 
 const textTheme = TextTheme(
