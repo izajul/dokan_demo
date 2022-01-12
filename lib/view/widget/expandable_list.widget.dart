@@ -84,7 +84,7 @@ class _ExpandableListState extends State<ExpandableList>
                           ],
                         )),
                     Icon(
-                      Icons.keyboard_arrow_right,
+                      _inx==index?Icons.keyboard_arrow_down_sharp:Icons.keyboard_arrow_right,
                       size: 24,
                     ),
                   ],

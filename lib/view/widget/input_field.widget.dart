@@ -115,3 +115,108 @@ class FormFieldRounded extends StatelessWidget {
     );
   }
 }
+
+class FormFieldWithBorder extends StatelessWidget {
+  final double widht;
+  final String hintText;
+  final TextInputType inputType;
+  final TextEditingController? controller;
+  final String? validateText;
+  final String? initValue;
+  final bool isMultiline;
+  final onChange;
+  final icon;
+  final TextStyle? labelStyle;
+  final String? label;
+
+  const FormFieldWithBorder(
+      {this.widht = double.infinity,
+      this.hintText = "Ex. Hint",
+      Key? key,
+      this.inputType = TextInputType.text,
+      this.controller,
+      this.validateText,
+      this.labelStyle,
+      this.isMultiline = false,
+      this.initValue,
+      this.onChange,
+      this.icon = "assets/imgs/user_ic.png",
+      this.label})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var isViewPass = false;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          label == null
+              ? SizedBox()
+              : Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    label!,
+                    style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: MyColors.textHint),
+                  ),
+                ),
+          const SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+            width: widht,
+            child: TextFormField(
+              initialValue: initValue,
+              onChanged: onChange,
+              autofocus: false,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+              controller: controller,
+              textAlign: TextAlign.start,
+              cursorColor: MyColors.textDark,
+              validator: validateText == null
+                  ? null
+                  : (value) {
+                      if (value == null || value.isNotEmpty)
+                        return validateText;
+                    },
+              // keyboardType: inputType,
+              maxLines: isMultiline ? null : 1,
+              minLines: isMultiline ? 5 : 1,
+              keyboardType: isMultiline ? TextInputType.multiline : inputType,
+              obscureText:
+                  ((inputType == TextInputType.visiblePassword) && !isViewPass)
+                      ? true
+                      : false,
+              decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  // isDense: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: MyColors.borderDark, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: MyColors.borderDark, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                        color: MyColors.borderDark, width: 1.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintText: hintText,
+                  hintStyle: const TextStyle(color: MyColors.textHint)),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

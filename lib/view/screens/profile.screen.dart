@@ -1,4 +1,5 @@
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/reuseable/account_details.reuseable.dart';
 import 'package:dokan/view/widget/expandable_list.widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -107,7 +108,24 @@ class Profile extends StatelessWidget {
                         offset: Offset(1, 2))
                   ]),
               child: ExpandableList(
-                items: list,
+                items: [
+                  ExpandListViewItem(
+                      item: AccountDetails(),
+                      tabTitle: "Account",
+                      leadingIcon: "assets/imgs/user_ic.png"),
+                  ExpandListViewItem(
+                      item: SizedBox(),
+                      tabTitle: "Password",
+                      leadingIcon: "assets/imgs/lock_ic.png"),
+                  ExpandListViewItem(
+                      item: SizedBox(),
+                      tabTitle: "Notification",
+                      leadingIcon: "assets/imgs/notification_ic.png"),
+                  ExpandListViewItem(
+                      item: SizedBox(),
+                      tabTitle: "Wishlist (00)",
+                      leadingIcon: "assets/imgs/favorite_ic.png"),
+                ],
               ),
             )
           ],
@@ -116,23 +134,3 @@ class Profile extends StatelessWidget {
     );
   }
 }
-
-/// demo data
-var list = [
-  ExpandListViewItem(
-      item: Text("text 1"),
-      tabTitle: "Account",
-      leadingIcon: "assets/imgs/user_ic.png"),
-  ExpandListViewItem(
-      item: Text("text 2"),
-      tabTitle: "Password",
-      leadingIcon: "assets/imgs/lock_ic.png"),
-  ExpandListViewItem(
-      item: Text("text 2"),
-      tabTitle: "Notification",
-      leadingIcon: "assets/imgs/notification_ic.png"),
-  ExpandListViewItem(
-      item: Text("text 2"),
-      tabTitle: "Wishlist (00)",
-      leadingIcon: "assets/imgs/favorite_ic.png"),
-];
