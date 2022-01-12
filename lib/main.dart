@@ -17,9 +17,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarColor: Colors.white,
-        statusBarIconBrightness: Brightness.dark));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.white));
     return MaterialApp(
       title: 'Dokan Demo',
       theme: theme,
@@ -33,9 +32,6 @@ class MyApp extends StatelessWidget {
     Widget _nextPage;
 
     switch (settings.name) {
-      case Splash.routeName:
-        _nextPage = const Splash();
-        break;
       case Login.routeName:
         _nextPage = const Login();
         break;

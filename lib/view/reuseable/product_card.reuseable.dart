@@ -1,6 +1,7 @@
 import 'package:dokan/utils/appearance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({Key? key}) : super(key: key);
@@ -9,7 +10,6 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(8),
-      padding: EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -73,18 +73,30 @@ class ProductCard extends StatelessWidget {
                   )
                 ],
               )),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+          /*Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "120 Sold",
                   style: textTheme.subtitle2,
                 ),
-              ))
+              )),*/
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: RatingBarIndicator(
+                  rating: 2.75,
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  itemCount: 5,
+                  itemSize: 18.0,
+                  direction: Axis.horizontal,
+                ),
+              )),
         ],
       ),
     );

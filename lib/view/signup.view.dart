@@ -73,44 +73,40 @@ class Registration extends StatelessWidget {
                 ),
 
                 /// Name Field
-                Flexible(
-                    child: FormFieldRounded(
+                FormFieldRounded(
                   hintText: "Name",
-                )),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
 
                 /// Email Field
-                Flexible(
-                    child: FormFieldRounded(
+                FormFieldRounded(
                   hintText: "Email",
                   inputType: TextInputType.emailAddress,
                   icon: "assets/imgs/email_ic.png",
-                )),
+                ),
 
                 const SizedBox(
                   height: 10,
                 ),
 
                 /// Password Field
-                Flexible(
-                    child: FormFieldRounded(
+                FormFieldRounded(
                   hintText: "Password",
                   inputType: TextInputType.visiblePassword,
                   icon: "assets/imgs/lock_ic.png",
-                )),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
 
                 /// Confirm Password Field
-                Flexible(
-                    child: FormFieldRounded(
+                FormFieldRounded(
                   hintText: "Confirm Password",
                   inputType: TextInputType.visiblePassword,
                   icon: "assets/imgs/lock_ic.png",
-                )),
+                ),
 
                 const SizedBox(
                   height: 70,

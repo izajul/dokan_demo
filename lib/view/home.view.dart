@@ -12,13 +12,32 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+const Icon _searchIc = Icon(
+  Icons.search,
+  size: 28,
+);
+
+const _appTitle = Text(
+  "Product List",
+  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+);
+
 class _HomeState extends State<Home> {
+  Widget appBarTitle = _appTitle;
+  Icon actionIcon = _searchIc;
+
+  final key = GlobalKey<ScaffoldState>();
+  final TextEditingController _searchQuery = TextEditingController();
+  bool _IsSearching = false;
+  String _searchText = "";
+
   final PageController _myPage = PageController(initialPage: 0);
   int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _currentPage == 0 ? buildBar(context) : null,
       body: SafeArea(
         child: PageView(
           controller: _myPage,
@@ -30,7 +49,6 @@ class _HomeState extends State<Home> {
           children: [HomeScreen(), Profile()],
         ),
       ),
-
       floatingActionButton: Transform.translate(
         offset: Offset(0, 6),
         child: SizedBox(
@@ -119,5 +137,59 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  buildBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      title: appBarTitle,
+      actions: <Widget>[
+        IconButton(
+          padding: const EdgeInsets.all(0),
+          icon: actionIcon,
+          onPressed: () {
+            setState(() {
+              if (actionIcon.icon == Icons.search) {
+                actionIcon = const Icon(
+                  Icons.close,
+                );
+                appBarTitle = TextField(
+                  controller: _searchQuery,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: MyColors.textDark),
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: "Search Product",
+                  ),
+                );
+                _handleSearchStart();
+              } else {
+                _handleSearchEnd();
+              }
+            });
+          },
+        ),
+      ],
+      automaticallyImplyLeading: false,
+    );
+  }
+
+  void _handleSearchStart() {
+    setState(() {
+      _IsSearching = true;
+    });
+  }
+
+  void _handleSearchEnd() {
+    setState(() {
+      actionIcon = _searchIc;
+      _IsSearching = false;
+      _searchQuery.clear();
+      appBarTitle = _appTitle;
+    });
   }
 }
