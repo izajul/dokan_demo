@@ -106,7 +106,9 @@ class Profile extends StatelessWidget {
                         spreadRadius: 1,
                         offset: Offset(1, 2))
                   ]),
-              child: ExpandableList(),
+              child: ExpandableList(
+                items: list,
+              ),
             )
           ],
         ),
@@ -114,3 +116,23 @@ class Profile extends StatelessWidget {
     );
   }
 }
+
+/// demo data
+var list = [
+  ExpandListViewItem(
+      item: Text("text 1"),
+      tabTitle: "Account",
+      leadingIcon: "assets/imgs/user_ic.png"),
+  ExpandListViewItem(
+      item: Text("text 2"),
+      tabTitle: "Password",
+      leadingIcon: "assets/imgs/lock_ic.png"),
+  ExpandListViewItem(
+      item: Text("text 2"),
+      tabTitle: "Notification",
+      leadingIcon: "assets/imgs/notification_ic.png"),
+  ExpandListViewItem(
+      item: Text("text 2"),
+      tabTitle: "Wishlist (00)",
+      leadingIcon: "assets/imgs/favorite_ic.png"),
+];

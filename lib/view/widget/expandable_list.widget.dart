@@ -3,16 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ExpandableList extends StatefulWidget {
-  ExpandableList({Key? key}) : super(key: key);
+  const ExpandableList({Key? key, required this.items}) : super(key: key);
 
-  List<ExpandListViewItem> items = [
-    ExpandListViewItem(
-        item: _getWidget("text 1"), tabTitle: "Tab 1", leadingIcon: Icons.menu),
-    ExpandListViewItem(
-        item: _getWidget("text 2"),
-        tabTitle: "Tab 2",
-        leadingIcon: Icons.translate),
-  ];
+  final List<ExpandListViewItem> items;
 
   @override
   _ExpandableListState createState() => _ExpandableListState();
@@ -58,31 +51,58 @@ class _ExpandableListState extends State<ExpandableList>
         itemCount: widget.items.length,
         itemBuilder: (BuildContext context, int index) {
           final item = widget.items[index];
-          return GestureDetector(
-            onTap: () => onExpend(index),
-            child: Column(
-              children: [
-                Row(
+          return Column(
+            children: [
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: MyColors.filedIcon,
+                  splashFactory: NoSplash.splashFactory,
+                ),
+                onPressed: () => onExpend(index),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    Flexible(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              item.leadingIcon,
+                              width: 28,
+                              height: 28,
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                                child: Text(
+                              item.tabTitle,
+                              style: textTheme.headline6,
+                            )),
+                          ],
+                        )),
                     Icon(
-                      item.leadingIcon,
-                      size: 22,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      item.tabTitle,
-                      style: textTheme.headline6,
+                      Icons.keyboard_arrow_right,
+                      size: 24,
                     ),
                   ],
                 ),
-                SizeTransition(
-                  sizeFactor: _animation,
-                  child: _inx == index ? item.item : SizedBox(),
-                )
-              ],
-            ),
+              ),
+              SizeTransition(
+                sizeFactor: _animation,
+                child: _inx == index ? item.item : SizedBox(),
+              ),
+              (index != widget.items.length - 1)
+                  ? Divider(
+                      color: MyColors.textHint.shade200,
+                      indent: 10,
+                      endIndent: 10,
+                      thickness: 2,
+                    )
+                  : SizedBox()
+            ],
           );
         },
       ),
@@ -90,20 +110,13 @@ class _ExpandableListState extends State<ExpandableList>
   }
 }
 
-Widget _getWidget(text) {
-  return Container(
-    padding: EdgeInsets.all(10),
-    alignment: Alignment.center,
-    child: Text(text),
-  );
-}
-
 class ExpandListViewItem {
   final Widget item;
   final String tabTitle;
-  IconData? leadingIcon = Icons.menu;
-  bool _isExpanded = false;
+  final String leadingIcon;
 
   ExpandListViewItem(
-      {required this.item, required this.tabTitle, this.leadingIcon});
+      {required this.item,
+      required this.tabTitle,
+      this.leadingIcon = "assets/imgs/user_ic.png"});
 }
