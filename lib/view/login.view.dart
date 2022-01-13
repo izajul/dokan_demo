@@ -1,4 +1,5 @@
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/widget/buttons.widget.dart';
 import 'package:dokan/view/widget/input_field.widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,7 +118,7 @@ class Login extends StatelessWidget {
                     alignment: Alignment.center,
                     child: TextButton(
                       onPressed: () {
-                        //todo goto reset password
+                        Navigator.pushNamed(context, Registration.routeName);
                       },
                       child: Text(
                         "Create New Account?",

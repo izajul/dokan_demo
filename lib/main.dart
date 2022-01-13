@@ -18,12 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.white));
+        const SystemUiOverlayStyle(statusBarColor: Colors.white));
     return MaterialApp(
       title: 'Dokan Demo',
       theme: theme,
       onGenerateRoute: onGenerateRoute,
-      initialRoute: Home.routeName,
+      initialRoute: Splash.routeName,
       debugShowCheckedModeBanner: false,
     );
   }
