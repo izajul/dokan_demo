@@ -1,6 +1,7 @@
 import 'package:dokan/utils/appearance.dart';
 import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/widget/buttons.widget.dart';
+import 'package:dokan/view/widget/dialogs.widget.dart';
 import 'package:dokan/view/widget/input_field.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,9 @@ class Login extends StatelessWidget {
                   height: 40,
                 ),
                 ButtonWithRipple(
-                  onPress: () {},
+                  onPress: () {
+                    SpinnerDialog.show(context);
+                  },
                   text: Text(
                     "Login",
                     style: textTheme.button?.apply(color: Colors.white),
