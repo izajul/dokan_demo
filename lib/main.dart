@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 
     switch (settings.name) {
       case Login.routeName:
-        _nextPage = const Login();
+        _nextPage = Login();
         break;
       case Registration.routeName:
         _nextPage = const Registration();

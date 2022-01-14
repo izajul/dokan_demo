@@ -2,12 +2,15 @@ import 'package:dokan/utils/appearance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Validator Typedef
+typedef Validate = String? Function(dynamic value);
+
 class FormFieldRounded extends StatelessWidget {
   final double widht;
   final String hintText;
   final TextInputType inputType;
   final TextEditingController? controller;
-  final String? validateText;
+  final Validate? validate;
   final String? initValue;
   final bool isMultiline;
   final onChange;
@@ -20,7 +23,7 @@ class FormFieldRounded extends StatelessWidget {
       Key? key,
       this.inputType = TextInputType.text,
       this.controller,
-      this.validateText,
+      this.validate,
       this.labelStyle,
       this.isMultiline = false,
       this.initValue,
@@ -30,85 +33,124 @@ class FormFieldRounded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    var hasError = false;
+    var errMsg = "";
     var isViewPass = false;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter state) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(0, 2),
-                      color: MyColors.shadow.shade50,
-                      blurRadius: 3.0,
-                      spreadRadius: 1)
-                ]),
-            child: TextFormField(
-              initialValue: initValue,
-              onChanged: onChange,
-              autofocus: false,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-              controller: controller,
-              textAlign: TextAlign.start,
-              cursorColor: MyColors.textDark,
-              validator: validateText == null
-                  ? (value) {
-                      if (value == null || value.isNotEmpty) return "sdf";
-                    }
-                  : (value) {
-                      if (value == null || value.isNotEmpty)
-                        return validateText;
-                    },
-              // keyboardType: inputType,
-              maxLines: isMultiline ? null : 1,
-              minLines: isMultiline ? 5 : 1,
-              keyboardType: isMultiline ? TextInputType.multiline : inputType,
-              obscureText:
-                  ((inputType == TextInputType.visiblePassword) && !isViewPass)
+          return Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: const Offset(0, 2),
+                          color: MyColors.shadow.shade50,
+                          blurRadius: 3.0,
+                          spreadRadius: 1)
+                    ]),
+                child: TextFormField(
+                  initialValue: initValue,
+                  onChanged: onChange,
+                  autofocus: false,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w400),
+                  controller: controller,
+                  textAlign: TextAlign.start,
+                  cursorColor: MyColors.textDark,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: validate == null
+                      ? null
+                      : (value) {
+                          debugPrint("validating");
+                          String? valid = validate!(value);
+                          if (valid == null) {
+                            if (!hasError) return;
+                            Future.delayed(Duration.zero, () async {
+                              state(() {
+                                hasError = false;
+                              });
+                            });
+                          } else {
+                            if (hasError) return;
+                            Future.delayed(Duration.zero, () async {
+                              state(() {
+                                hasError = true;
+                                errMsg = valid;
+                              });
+                            });
+                          }
+                          return null;
+                        },
+                  // keyboardType: inputType,
+                  maxLines: isMultiline ? null : 1,
+                  minLines: isMultiline ? 5 : 1,
+                  keyboardType:
+                      isMultiline ? TextInputType.multiline : inputType,
+                  obscureText: ((inputType == TextInputType.visiblePassword) &&
+                          !isViewPass)
                       ? true
                       : false,
-              decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  icon: Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Image.asset(
-                      icon,
-                      width: 24,
-                      height: 24,
-                    ),
-                  ),
-                  suffixIcon: inputType == TextInputType.visiblePassword
-                      ? GestureDetector(
-                          onTap: () {
-                            state(() {
-                              isViewPass = !isViewPass;
-                            });
-                          },
-                          child: isViewPass
-                              ? const Icon(
-                                  Icons.visibility,
-                                  color: MyColors.filedIcon,
-                                )
-                              : const Icon(
-                                  Icons.visibility_off,
-                                  color: MyColors.filedIcon,
-                                ),
-                        )
-                      : null,
-                  // isDense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: const TextStyle(color: MyColors.textHint)),
-            ),
+                  decoration: InputDecoration(
+                      fillColor: Colors.white,
+                      icon: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Image.asset(
+                          icon,
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                      suffixIcon: inputType == TextInputType.visiblePassword
+                          ? GestureDetector(
+                              onTap: () {
+                                state(() {
+                                  isViewPass = !isViewPass;
+                                });
+                              },
+                              child: isViewPass
+                                  ? const Icon(
+                                      Icons.visibility,
+                                      color: MyColors.filedIcon,
+                                    )
+                                  : const Icon(
+                                      Icons.visibility_off,
+                                      color: MyColors.filedIcon,
+                                    ),
+                            )
+                          : null,
+                      // isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 20),
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      hintText: hintText,
+                      hintStyle: const TextStyle(color: MyColors.textHint)),
+                ),
+              ),
+              hasError
+                  ? Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 20,
+                          top: 5,
+                        ),
+                        child: Text(
+                          errMsg,
+                          style: textTheme.subtitle2
+                              ?.apply(color: Color(0xffe76969)),
+                        ),
+                      ),
+                    )
+                  : SizedBox()
+            ],
           );
         },
       ),
