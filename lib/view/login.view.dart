@@ -1,17 +1,17 @@
+import 'package:dokan/controller/login.controller.dart';
 import 'package:dokan/utils/appearance.dart';
-import 'package:dokan/utils/functions.dart';
 import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/widget/buttons.widget.dart';
 import 'package:dokan/view/widget/input_field.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Login extends StatelessWidget {
   static const routeName = "/login";
-
   Login({Key? key}) : super(key: key);
-
   final _key = GlobalKey<FormState>();
+  final LoginController _controller = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +50,14 @@ class Login extends StatelessWidget {
                     height: 40,
                   ),
                   FormFieldRounded(
-                    hintText: "Email",
-                    icon: "assets/imgs/email_ic.png",
+                    onChanged: (value) {
+                      _controller.setData("username", value);
+                    },
+                    hintText: "Username",
+                    icon: "assets/imgs/user_ic.png",
                     validate: (value) {
-                      if (value == null ||
-                          value.toString().isEmpty ||
-                          !validEmail(value.toString())) {
-                        return "Enter Valid Email";
+                      if (value == null || value.toString().isEmpty) {
+                        return "Enter username";
                       }
                       return null;
                     },
@@ -65,9 +66,18 @@ class Login extends StatelessWidget {
                     height: 10,
                   ),
                   FormFieldRounded(
+                    onChanged: (value) {
+                      _controller.setData("password", value);
+                    },
                     hintText: "Password",
                     inputType: TextInputType.visiblePassword,
                     icon: "assets/imgs/lock_ic.png",
+                    validate: (value) {
+                      if (value == null || value.toString().isEmpty) {
+                        return "Enter Password";
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(
                     height: 5,
@@ -86,15 +96,26 @@ class Login extends StatelessWidget {
                   const SizedBox(
                     height: 40,
                   ),
-                  ButtonWithRipple(
-                    onPress: () {
-                      // SpinnerDialog.show(context);
-                    },
-                    text: Text(
-                      "Login",
-                      style: textTheme.button?.apply(color: Colors.white),
-                    ),
-                  ),
+
+                  /// observable with Login State state
+                  Obx(() {
+                    if (_controller.isLoading.value) {
+                      return const LinearProgressIndicator();
+                    }
+                    return ButtonWithRipple(
+                      onPress: () {
+                        if (_key.currentState?.validate() == false) {
+                          return;
+                        } else {
+                          _controller.login();
+                        }
+                      },
+                      text: Text(
+                        "Login",
+                        style: textTheme.button?.apply(color: Colors.white),
+                      ),
+                    );
+                  }),
                   const SizedBox(
                     height: 30,
                   ),

@@ -6,7 +6,8 @@ class RemoteService {
   static final client = http.Client();
 
   Future<RemoteResponse> login(Map<String, String> payload) async {
-    var res = await client.post(Uri.parse("jwt-auth/v1/token"), body: payload);
+    var res = await client.post(Uri.parse(baseURL + "jwt-auth/v1/token"),
+        body: payload);
     var result = RemoteResponse();
     if (res.statusCode == 200) {
       result.msg = "Login Success";

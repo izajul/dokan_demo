@@ -4,6 +4,7 @@ import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/splash.view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'utils/appearance.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.white));
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Dokan Demo',
       theme: theme,
       onGenerateRoute: onGenerateRoute,

@@ -2,18 +2,15 @@ import 'package:dokan/utils/appearance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// Validator Typedef
-typedef Validate = String? Function(dynamic value);
-
 class FormFieldRounded extends StatelessWidget {
   final double widht;
   final String hintText;
   final TextInputType inputType;
   final TextEditingController? controller;
-  final Validate? validate;
+  final FormFieldValidator<String>? validate;
   final String? initValue;
   final bool isMultiline;
-  final onChange;
+  final ValueChanged<String>? onChanged;
   final icon;
   TextStyle? labelStyle;
 
@@ -27,22 +24,21 @@ class FormFieldRounded extends StatelessWidget {
       this.labelStyle,
       this.isMultiline = false,
       this.initValue,
-      this.onChange,
+      this.onChanged,
       this.icon = "assets/imgs/user_ic.png"})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var hasError = false;
-    var errMsg = "";
     var isViewPass = false;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: StatefulBuilder(
         builder: (BuildContext context, StateSetter state) {
-          return Column(
+          return Stack(
             children: [
               Container(
+                height: 61,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -54,102 +50,63 @@ class FormFieldRounded extends StatelessWidget {
                           blurRadius: 3.0,
                           spreadRadius: 1)
                     ]),
-                child: TextFormField(
-                  initialValue: initValue,
-                  onChanged: onChange,
-                  autofocus: false,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w400),
-                  controller: controller,
-                  textAlign: TextAlign.start,
-                  cursorColor: MyColors.textDark,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: validate == null
-                      ? null
-                      : (value) {
-                          debugPrint("validating");
-                          String? valid = validate!(value);
-                          if (valid == null) {
-                            if (!hasError) return;
-                            Future.delayed(Duration.zero, () async {
-                              state(() {
-                                hasError = false;
-                              });
-                            });
-                          } else {
-                            if (hasError) return;
-                            Future.delayed(Duration.zero, () async {
-                              state(() {
-                                hasError = true;
-                                errMsg = valid;
-                              });
-                            });
-                          }
-                          return null;
-                        },
-                  // keyboardType: inputType,
-                  maxLines: isMultiline ? null : 1,
-                  minLines: isMultiline ? 5 : 1,
-                  keyboardType:
-                      isMultiline ? TextInputType.multiline : inputType,
-                  obscureText: ((inputType == TextInputType.visiblePassword) &&
-                          !isViewPass)
-                      ? true
-                      : false,
-                  decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      icon: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Image.asset(
-                          icon,
-                          width: 24,
-                          height: 24,
-                        ),
-                      ),
-                      suffixIcon: inputType == TextInputType.visiblePassword
-                          ? GestureDetector(
-                              onTap: () {
-                                state(() {
-                                  isViewPass = !isViewPass;
-                                });
-                              },
-                              child: isViewPass
-                                  ? const Icon(
-                                      Icons.visibility,
-                                      color: MyColors.filedIcon,
-                                    )
-                                  : const Icon(
-                                      Icons.visibility_off,
-                                      color: MyColors.filedIcon,
-                                    ),
-                            )
-                          : null,
-                      // isDense: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 20),
-                      enabledBorder: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      errorBorder: InputBorder.none,
-                      hintText: hintText,
-                      hintStyle: const TextStyle(color: MyColors.textHint)),
-                ),
               ),
-              hasError
-                  ? Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 20,
-                          top: 5,
-                        ),
-                        child: Text(
-                          errMsg,
-                          style: textTheme.subtitle2
-                              ?.apply(color: Color(0xffe76969)),
-                        ),
+              TextFormField(
+                initialValue: initValue,
+                onChanged: onChanged,
+                autofocus: false,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                controller: controller,
+                textAlign: TextAlign.start,
+                cursorColor: MyColors.textDark,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: validate,
+                maxLines: isMultiline ? null : 1,
+                minLines: isMultiline ? 5 : 1,
+                keyboardType: isMultiline ? TextInputType.multiline : inputType,
+                obscureText: ((inputType == TextInputType.visiblePassword) &&
+                        !isViewPass)
+                    ? true
+                    : false,
+                decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    icon: Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        icon,
+                        width: 24,
+                        height: 24,
                       ),
-                    )
-                  : SizedBox()
+                    ),
+                    suffixIcon: inputType == TextInputType.visiblePassword
+                        ? GestureDetector(
+                            onTap: () {
+                              state(() {
+                                isViewPass = !isViewPass;
+                              });
+                            },
+                            child: isViewPass
+                                ? const Icon(
+                                    Icons.visibility,
+                                    color: MyColors.filedIcon,
+                                  )
+                                : const Icon(
+                                    Icons.visibility_off,
+                                    color: MyColors.filedIcon,
+                                  ),
+                          )
+                        : null,
+                    // isDense: true,
+                    contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                    hintText: hintText,
+                    hintStyle: const TextStyle(color: MyColors.textHint)),
+              )
             ],
           );
         },
