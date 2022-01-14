@@ -1,6 +1,9 @@
-import 'package:dokan/view/login.view.dart';
+import 'package:dokan/services/local.service.dart';
+import 'package:dokan/view/home.view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'login.view.dart';
 
 class Splash extends StatelessWidget {
   static const routeName = "/";
@@ -9,9 +12,7 @@ class Splash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 2)).then((value) =>
-        Navigator.pushNamedAndRemoveUntil(
-            context, Login.routeName, (route) => false));
+    checkSession(context);
     return Material(
       child: SafeArea(
           child: Center(
@@ -22,5 +23,12 @@ class Splash extends StatelessWidget {
         ),
       )),
     );
+  }
+
+  void checkSession(BuildContext context) async {
+    final session = await LocalService.hasSession();
+    Future.delayed(const Duration(seconds: 2)).then((value) =>
+        Navigator.pushNamedAndRemoveUntil(context,
+            session ? Home.routeName : Login.routeName, (route) => false));
   }
 }
