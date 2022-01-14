@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dokan/model/login.model.dart';
+import 'package:dokan/model/signup.model.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {
@@ -23,16 +26,25 @@ class RemoteService {
 
   static Future<RemoteResponse> registration(
       Map<String, String> payload) async {
-    var res = await client.post(Uri.parse("jwt-auth/v1/token"), body: payload);
+    var headers = {'Content-Type': 'application/json'};
+    var request =
+        http.Request('POST', Uri.parse(baseURL + "wp/v2/users/register"));
+    request.body = json.encode(payload);
+    request.headers.addAll(headers);
+    var res = await client.send(request);
+
     var result = RemoteResponse();
+
+    final bytes = await res.stream.bytesToString();
+
     if (res.statusCode == 200) {
-      result.msg = "Login Success";
+      result.msg = "Registration Success";
       result.status = true;
-      result.data = loginModelFromJson(res.body);
+      result.data = signupModelFromJson(bytes);
     } else {
-      result.msg = "Login Failed";
+      result.msg = "Registration Failed";
       result.status = false;
-      result.data = loginErrModelFromJson(res.body);
+      result.data = signupModelFromJson(bytes);
     }
     return result;
   }
