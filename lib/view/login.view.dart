@@ -1,5 +1,6 @@
 import 'package:dokan/controller/login.controller.dart';
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/home.view.dart';
 import 'package:dokan/view/signup.view.dart';
 import 'package:dokan/view/widget/buttons.widget.dart';
 import 'package:dokan/view/widget/input_field.widget.dart';
@@ -99,6 +100,11 @@ class Login extends StatelessWidget {
 
                   /// observable with Login State state
                   Obx(() {
+                    if (_controller.isSessionStarted.value) {
+                      Future.delayed(Duration.zero).then((value) =>
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, Home.routeName, (route) => false));
+                    }
                     if (_controller.isLoading.value) {
                       return const LinearProgressIndicator();
                     }

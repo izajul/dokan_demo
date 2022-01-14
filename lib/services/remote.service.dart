@@ -5,7 +5,7 @@ class RemoteService {
   static const baseURL = "https://apptest.dokandemo.com/wp-json/";
   static final client = http.Client();
 
-  Future<RemoteResponse> login(Map<String, String> payload) async {
+  static Future<RemoteResponse> login(Map<String, String> payload) async {
     var res = await client.post(Uri.parse(baseURL + "jwt-auth/v1/token"),
         body: payload);
     var result = RemoteResponse();
@@ -21,7 +21,8 @@ class RemoteService {
     return result;
   }
 
-  Future<RemoteResponse> registration(Map<String, String> payload) async {
+  static Future<RemoteResponse> registration(
+      Map<String, String> payload) async {
     var res = await client.post(Uri.parse("jwt-auth/v1/token"), body: payload);
     var result = RemoteResponse();
     if (res.statusCode == 200) {
