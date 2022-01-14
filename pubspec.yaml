@@ -41,6 +41,8 @@ dependencies:
   get: ^4.6.1
   http: any
   shared_preferences: any
+  image_picker: any
+  
 
 dev_dependencies:
   flutter_test:
