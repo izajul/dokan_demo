@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:dokan/model/login.model.dart';
+import 'package:dokan/model/product.model.dart';
 import 'package:dokan/model/signup.model.dart';
+import 'package:dokan/utils/const_data.dart';
 import 'package:http/http.dart' as http;
 
 class RemoteService {
@@ -47,6 +49,14 @@ class RemoteService {
       result.data = signupModelFromJson(bytes);
     }
     return result;
+  }
+
+  static Future<List<ProductModel>?> fetchProduct() async {
+    var list = <ProductModel>[];
+    await Future.delayed(const Duration(seconds: 3)).then((value) {
+      list = productModelFromJson(json.encode(products));
+    });
+    return list;
   }
 }
 
