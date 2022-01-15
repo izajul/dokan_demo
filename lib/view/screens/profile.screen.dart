@@ -1,5 +1,7 @@
 import 'package:dokan/controller/profile.controller.dart';
+import 'package:dokan/services/local.service.dart';
 import 'package:dokan/utils/appearance.dart';
+import 'package:dokan/view/login.view.dart';
 import 'package:dokan/view/reuseable/account_details.reuseable.dart';
 import 'package:dokan/view/widget/expandable_list.widget.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -26,11 +28,28 @@ class Profile extends StatelessWidget {
               padding: const EdgeInsets.only(
                 top: 35,
               ),
-              child: Center(
-                child: Text(
-                  "My Account",
-                  style: textTheme.headline5?.apply(fontSizeFactor: 1.2),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(
+                    width: 60,
+                  ),
+                  Text(
+                    "My Account",
+                    style: textTheme.headline5?.apply(fontSizeFactor: 1.2),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await LocalService.clearPreference();
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, Login.routeName, (route) => false);
+                    },
+                    icon: const Icon(
+                      Icons.exit_to_app_sharp,
+                      size: 28,
+                    ),
+                  )
+                ],
               ),
             ),
 
