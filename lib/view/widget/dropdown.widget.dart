@@ -1,14 +1,15 @@
+import 'package:dokan/services/filter.service.dart';
 import 'package:dokan/utils/appearance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatelessWidget {
-  CustomDropdown({Key? key, required this.list}) : super(key: key);
-  final List<String> list;
+  const CustomDropdown({Key? key, this.onSelect}) : super(key: key);
+  final onSelect;
+
   @override
   Widget build(BuildContext context) {
-    list.insert(0, "Sort by");
-    var dropdownValue = list.first;
+    var dropdownValue = "Sort by";
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return DropdownButton<String>(
@@ -27,8 +28,29 @@ class CustomDropdown extends StatelessWidget {
           setState(() {
             dropdownValue = newValue!;
           });
+          if (newValue == "Sort by") {
+            onSelect(SortBy.NONE);
+          }
+          if (newValue == "Price Low>Hight") {
+            onSelect(SortBy.LOWTOHIGHPRICE);
+          }
+          if (newValue == "Price High>Low") {
+            onSelect(SortBy.HIGHTOLOWPRICE);
+          }
+          if (newValue == "Top Rated") {
+            onSelect(SortBy.TOPRATED);
+          }
+          if (newValue == "Best Selling") {
+            onSelect(SortBy.BESTSEALS);
+          }
         },
-        items: list.map<DropdownMenuItem<String>>((String value) {
+        items: const [
+          "Sort by",
+          "Price Low>Hight",
+          "Price High>Low",
+          "Top Rated",
+          "Best Selling",
+        ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),

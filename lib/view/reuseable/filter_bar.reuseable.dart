@@ -1,12 +1,14 @@
+import 'package:dokan/controller/product.controller.dart';
 import 'package:dokan/utils/appearance.dart';
 import 'package:dokan/view/reuseable/bottom_sheet.reuseable.dart';
 import 'package:dokan/view/widget/dropdown.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class FilterBar extends StatelessWidget {
-  const FilterBar({Key? key}) : super(key: key);
-
+  FilterBar({Key? key}) : super(key: key);
+  final ProductController _controller = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,13 +60,15 @@ class FilterBar extends StatelessWidget {
                 )),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
             child: Row(
               children: [
                 CustomDropdown(
-                  list: [],
+                  onSelect: (value) {
+                    _controller.setShortBy(value);
+                  },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Image.asset(
