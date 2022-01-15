@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dokan/model/login.model.dart';
 import 'package:dokan/model/product.model.dart';
+import 'package:dokan/model/profile.model.dart';
 import 'package:dokan/model/signup.model.dart';
+import 'package:dokan/services/local.service.dart';
 import 'package:dokan/utils/const_data.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,6 +49,27 @@ class RemoteService {
       result.msg = "Registration Failed";
       result.status = false;
       result.data = signupModelFromJson(bytes);
+    }
+    return result;
+  }
+
+  static Future<RemoteResponse> profileInfo(
+      Map<String, String>? payload) async {
+    final userInfo = await LocalService.getSessionInfo();
+
+    var headers = {'Authorization': "Bearer ${userInfo?.token ?? ""}"};
+
+    var res = await client.post(Uri.parse(baseURL + "wp/v2/users/me"),
+        headers: headers, body: payload);
+    var result = RemoteResponse();
+    if (res.statusCode == 200) {
+      result.msg = "Success";
+      result.status = true;
+      result.data = profileModelFromJson(res.body);
+    } else {
+      result.msg = "Failed";
+      result.status = false;
+      result.data = loginErrModelFromJson(res.body);
     }
     return result;
   }
