@@ -1,11 +1,15 @@
+import 'package:dokan/controller/product.controller.dart';
 import 'package:dokan/utils/appearance.dart';
 import 'package:dokan/view/widget/buttons.widget.dart';
 import 'package:dokan/view/widget/checkbox.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MainBottomSheet extends StatelessWidget {
-  const MainBottomSheet({Key? key}) : super(key: key);
+  MainBottomSheet({Key? key}) : super(key: key);
+
+  final ProductController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -41,41 +45,17 @@ class MainBottomSheet extends StatelessWidget {
           ),
           Flexible(
               flex: 1,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                  CustomCheckbox(
-                    label: "Label",
-                  ),
-                ],
-              )),
+              child: Obx(() {
+                final list = _controller.categoryList.value;
+
+                return ListView(
+                    shrinkWrap: false,
+                    children: list
+                        .map((item) => CustomCheckbox(
+                              category: item,
+                            ))
+                        .toList());
+              })),
           const SizedBox(
             height: 10,
           ),
@@ -100,7 +80,8 @@ class MainBottomSheet extends StatelessWidget {
                       child: ButtonWithRipple(
                     background: MyColors.successColor,
                     onPress: () {
-                      ///todo need to apply the filter
+                      Navigator.pop(context);
+                      _controller.applyFilter();
                     },
                     text: Text(
                       "Apply",

@@ -35,7 +35,7 @@ class FilterBar extends StatelessWidget {
                   showModalBottomSheet(
                     context: context,
                     useRootNavigator: true,
-                    builder: (context) => const MainBottomSheet(),
+                    builder: (context) => MainBottomSheet(),
                   );
                 },
                 style: TextButton.styleFrom(padding: const EdgeInsets.all(10)),

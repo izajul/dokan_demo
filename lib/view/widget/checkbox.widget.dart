@@ -1,18 +1,24 @@
+import 'package:dokan/controller/product.controller.dart';
+import 'package:dokan/model/product.model.dart';
 import 'package:dokan/utils/appearance.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomCheckbox extends StatelessWidget {
-  const CustomCheckbox({Key? key, this.label = "Label"}) : super(key: key);
-  final String label;
+  CustomCheckbox({Key? key, required this.category}) : super(key: key);
+  final Category category;
+  final ProductController _controller = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    bool isChecked = false;
+    final catList = _controller.filterWith;
+    bool isChecked = catList.contains(category);
     return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
       return Row(
         children: [
           Container(
-            margin: EdgeInsets.symmetric(vertical: 7),
+            margin: const EdgeInsets.symmetric(vertical: 7),
             width: 25,
             height: 25,
             decoration: BoxDecoration(
@@ -31,6 +37,11 @@ class CustomCheckbox extends StatelessWidget {
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     value: isChecked,
                     onChanged: (v) {
+                      if (v == true) {
+                        _controller.addFilter(category);
+                      } else {
+                        _controller.removeFilter(category);
+                      }
                       setState(() {
                         isChecked = !isChecked;
                       });
@@ -42,7 +53,7 @@ class CustomCheckbox extends StatelessWidget {
             width: 15,
           ),
           Text(
-            label,
+            "${category.name}",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
           ),
         ],

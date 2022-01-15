@@ -9,9 +9,12 @@ class ProductController extends GetxController {
   var isLoading = false.obs;
   var _products = <ProductModel>[];
   final filteredList = <ProductModel>[].obs;
+  final categoryList = <Category>[].obs;
 
   final _filteredWith = <Category>[];
   SortBy? _sortBy;
+
+  List<Category> get filterWith => _filteredWith;
 
   @override
   void onInit() {
@@ -22,6 +25,7 @@ class ProductController extends GetxController {
   void _fetchProduct() async {
     isLoading(true);
     _products = await RemoteService.fetchProduct() ?? [];
+    _seperateCategory();
     _performFilter();
   }
 
@@ -50,16 +54,16 @@ class ProductController extends GetxController {
   void addFilter(Category value) async {
     if (!_filteredWith.contains(value)) {
       _filteredWith.add(value);
-      _performFilter();
     }
   }
 
   void removeFilter(Category value) async {
     if (_filteredWith.contains(value)) {
       _filteredWith.remove(value);
-      _performFilter();
     }
   }
+
+  void applyFilter() => _performFilter();
 
   void setShortBy(SortBy value) async {
     _sortBy = value;
@@ -69,5 +73,19 @@ class ProductController extends GetxController {
   void _sortProduct() async {
     if (_sortBy == null) return;
     filteredList.value = await _productSort.getFilteredData(_sortBy!);
+  }
+
+  void _seperateCategory() async {
+    final ls = <Category>[];
+    for (final item in _products) {
+      if (item.categories?.isNotEmpty == true) {
+        for (final cat in item.categories!) {
+          if (!ls.contains(cat)) {
+            ls.add(cat);
+          }
+        }
+      }
+    }
+    categoryList.value = ls.toSet().toList();
   }
 }
