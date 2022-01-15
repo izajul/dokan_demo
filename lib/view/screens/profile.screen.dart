@@ -1,12 +1,16 @@
+import 'package:dokan/controller/profile.controller.dart';
 import 'package:dokan/utils/appearance.dart';
 import 'package:dokan/view/reuseable/account_details.reuseable.dart';
 import 'package:dokan/view/widget/expandable_list.widget.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
+
+  final _controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +48,17 @@ class Profile extends StatelessWidget {
                         child: SizedBox(
                           width: 110,
                           height: 110,
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(50)),
-                            child: Image.asset("assets/imgs/user_ic.png"),
-                          ),
+                          child: Obx(() {
+                            final img =
+                                _controller.profileInfo.value.avatarUrls?["96"];
+                            return ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(50)),
+                              child: img == null
+                                  ? Image.asset("assets/imgs/user_ic.png")
+                                  : Image.network(img),
+                            );
+                          }),
                         )),
                     /*Positioned(
                         bottom: 0,
@@ -77,18 +87,18 @@ class Profile extends StatelessWidget {
 
             /// Name Field
             Center(
-              child: Text(
-                "User Name",
-                style: textTheme.headline5?.apply(fontSizeFactor: 1.2),
-              ),
+              child: Obx(() => Text(
+                    _controller.profileInfo.value.name ?? 'User name',
+                    style: textTheme.headline5?.apply(fontSizeFactor: 1.2),
+                  )),
             ),
 
             /// User mail
             Center(
-              child: Text(
-                "usermail@johnsmith.com",
-                style: textTheme.bodyText1,
-              ),
+              child: Obx(() => Text(
+                    _controller.profileInfo.value.email ?? "youremail@mail.e",
+                    style: textTheme.bodyText1,
+                  )),
             ),
             const SizedBox(
               height: 40,
